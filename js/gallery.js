@@ -65,43 +65,42 @@ const images = [
     ];
     const gallery = document.querySelector('.gallery');
 
-    const galleryMarkup = images.map(({ preview, original, description }) => {
-        return `
-          <li class="gallery-item">
-            <a class="gallery-link" href="${original}">
-              <img
-                class="gallery-image"
-                src="${preview}"
-                data-source="${original}"
-                alt="${description}"
-              />
-            </a>
-          </li>
-        `;
-      }).join('');
-      
-      gallery.insertAdjacentHTML('beforeend', galleryMarkup);
-      
-      gallery.addEventListener('click', (e) => {
-        e.preventDefault();
-        const img = e.target;
-        if (img.nodeName !== 'IMG') return;
-      
-        const largeImgURL = img.dataset.source;
-      
-        const instance = basicLightbox.create(
-          `<img src="${largeImgURL}" width="800" height="600">`
-        );
-      
-        instance.show();
-      });
     
-      const onEscClose = (event) => {
-        if (event.key === "Escape") {
-          instance.close();
-          document.removeEventListener("keydown", onEscClose);
-        }
-      };
-    
-      document.addEventListener("keydown", onEscClose);
-   
+const markup = images.map(({ preview, original, description }) => `
+<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>
+`).join("");
+
+gallery.innerHTML = markup;
+
+gallery.addEventListener("click", (e) => {
+e.preventDefault();
+
+const isImg = e.target.classList.contains("gallery-image");
+if (!isImg) return;
+
+const largeImgUrl = e.target.dataset.source;
+
+const instance = basicLightbox.create(`
+  <img src="${largeImgUrl}" width="800" height="600">
+`);
+
+instance.show();
+
+const onEscClose = (event) => {
+  if (event.key === "Escape") {
+    instance.close();
+    document.removeEventListener("keydown", onEscClose);
+  }
+};
+
+document.addEventListener("keydown", onEscClose);
+});
