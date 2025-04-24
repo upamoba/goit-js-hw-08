@@ -104,3 +104,14 @@ const onEscClose = (event) => {
 
 document.addEventListener("keydown", onEscClose);
 });
+
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const lightbox = document.querySelector(".basicLightbox");
+    if (lightbox) {
+      lightbox.classList.remove("basicLightbox--visible");
+      lightbox.remove();
+    }
+  }
+});
